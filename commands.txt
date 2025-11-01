@@ -1,0 +1,79 @@
+#Step-by-Step Implementation
+
+1. Create a New User
+sudo adduser devopsadmin
+
+This command creates the user, prompts for a password, and adds entries in /etc/passwd and /etc/shadow.
+
+2. Verify User Creation
+id devopsadmin
+
+Expected output:
+
+uid=1001(devopsadmin) gid=1001(devopsadmin) groups=1001(devopsadmin)
+
+3. Add User to Sudo Group
+sudo usermod -aG sudo devopsadmin
+
+
+The -aG flag appends the user to an existing group (sudo in Ubuntu or wheel in CentOS/RHEL).
+
+Check:
+
+groups devopsadmin
+
+
+Expected output:
+
+devopsadmin : devopsadmin sudo
+
+
+4. Verify Sudo Access
+
+Switch to the new user:
+
+su - devopsadmin
+
+
+Then check sudo:
+
+sudo whoami
+
+
+Expected output:
+
+root
+
+
+5. Alternative: Manual Entry in Sudoers File
+
+Edit sudoers safely using:
+
+sudo visudo
+
+
+Add this line at the end:
+
+devopsadmin ALL=(ALL:ALL) ALL
+
+
+Never edit /etc/sudoers directly using vi or nano. Always use visudo for syntax validation.
+
+
+6. Validate Configuration
+
+You can validate sudoers syntax anytime with:
+
+sudo visudo -c
+
+
+Expected output:
+
+/etc/sudoers: parsed OK
+
+
+7. Remove User (Optional Cleanup)
+
+If you wish to remove the user later:
+
+sudo deluser devopsadmin --remove-home
